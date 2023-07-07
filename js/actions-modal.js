@@ -1,7 +1,7 @@
 // Показывает и скрывает модальное окно
 
 import {isEscapeKey} from './util.js';
-import {createModalContent} from './get-detailed-post.js';
+import { arrayOfPosts } from './data.js';
 import {renderComments} from './comments-list.js';
 
 const collectionPosts = document.querySelector('.pictures');
@@ -9,6 +9,10 @@ const socialCommentsCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const bigPhotoModal = document.querySelector('.big-picture');
 const closeBigPhotoModal = document.querySelector('.big-picture__cancel');
+const bigPhotoImage = document.querySelector('.big-picture__img').querySelector('img');
+const bigPhotoLikes = document.querySelector('.likes-count');
+const bigPhotoCountComments = document.querySelector('.comments-count');
+const bigPhotoDescription = document.querySelector('.social__caption');
 
 // <Закрытие модального окна>
 const closeModal = () => {
@@ -43,6 +47,16 @@ function onDocumentKeydown (evt) {
     closeModal();
   }
 }
+
+// Функция, которая получает id поста, на который кликнули и подставляет в модальное окно его данные
+const createModalContent = (postId) => {
+  const currentPost = arrayOfPosts.find((post) => postId === post.id);
+  const {likes, url, comments, description} = currentPost;
+  bigPhotoImage.src = url;
+  bigPhotoLikes.textContent = likes;
+  bigPhotoCountComments.textContent = comments.length;
+  bigPhotoDescription.textContent = description;
+};
 
 // Показывает наполненное окно по клику
 collectionPosts.addEventListener('click', (evt) => {
